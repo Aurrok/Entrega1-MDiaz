@@ -1,4 +1,5 @@
-<!DOCTYPE html>
+{% extends 'base.html' %}
+{% comment %} <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,10 +7,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
 </head>
-<body>
+<body> {% endcomment %}
+    {% block mi_contenido %}
+    <a class="navbar-brand" href={% url 'indice' %}>Inicio</a>
     <p> listado de personas <p>
     {% for persona in personas %}      
          <li>{{persona.nombre}}{{persona.apellido}}{{persona.edad}}{{persona.fecha}}</li>
     {% endfor %}
-</body>
-</html>
+    {% endblock mi_contenido %}
+    
+{% comment %} </body>
+</html> {% endcomment %}
