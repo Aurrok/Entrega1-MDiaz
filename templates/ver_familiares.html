@@ -8,13 +8,18 @@
     <title>Document</title>
 </head>
 <body> {% endcomment %}
-    {% block mi_contenido %}
-    <a class="navbar-brand" href={% url 'indice' %}>Inicio</a>
+{% block mi_contenido %}
+    <a class="navbar-brand" href={% url 'crear_persona' %}>Registrar</a>
     <p> listado de personas <p>
+    <form action={% url 'familiares' %} method="GET">
+            {{formulario}}
+        <button>Buscar</button>    
+    </form>
+
     {% for persona in personas %}      
          <li>{{persona.nombre}}{{persona.apellido}}{{persona.edad}}{{persona.fecha}}</li>
     {% endfor %}
-    {% endblock mi_contenido %}
+{% endblock mi_contenido %}
     
 {% comment %} </body>
 </html> {% endcomment %}

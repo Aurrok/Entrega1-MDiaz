@@ -2,9 +2,11 @@ from django.http import HttpResponse
 from datetime import datetime
 from django.template import Context, Template , loader
 import random
+from familia import forms
 from familia.models import Familiar
 from django.shortcuts import render
-from familia.forms import FamiliarFormulario
+from familia.forms import FamiliarFormulario, BuFamiliarFormulario
+
 
 # from symbol import return_stmt
 
@@ -62,13 +64,16 @@ def crear_persona(request):
     return render(request,'crear_familiar.html',{'formulario': formulario})
 
 def ver_familiares(request):
+    nombre = request.GET.get('nombre', None)
+    if nombre:
+         personas = Familiar.objects.filter(nombre__icontains=nombre)
+    else:    
+         personas = Familiar.objects.all() 
     
-    personas = Familiar.objects.all() 
+    formulario = BuFamiliarFormulario()
     
-    # template = loader.get_template("ver_familiares.html")
-    # template_renderizado = template.render( {"personas" : personas})
-    # return HttpResponse(template_renderizado)
-    return render(request,"ver_familiares.html" , {"personas" : personas})
+    
+    return render(request,"ver_familiares.html" , {"personas" : personas,  "formulario": formulario})
 
 def indice(request):    
     
