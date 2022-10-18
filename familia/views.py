@@ -4,6 +4,7 @@ from django.template import Context, Template , loader
 import random
 from familia.models import Familiar
 from django.shortcuts import render
+from familia.forms import FamiliarFormulario
 
 # from symbol import return_stmt
 
@@ -45,12 +46,20 @@ def crear_persona(request):
     # template = loader.get_template("crear_familiar.html")
     # template_renderizado = template.render({"personas: " : personas})
     if request.method == 'POST':
-            nombre = request.POST.get('nombre')
-            apellido = request.POST.get('apellido')
-            persona = Familiar(nombre=nombre , apellido=apellido , edad = random.randrange(1,99), fecha= datetime.now())
+        formulario = FamiliarFormulario(request.POST)
+        
+        if formulario.is_valid():
+            data = formulario.cleaned_data
+            nombre = data['nombre']
+            apellido = data['apellido']
+            edad = data['edad']
+            fecha = data.get('fecha',datetime.now())
+            
+            persona = Familiar(nombre=nombre , apellido=apellido , edad = edad, fecha= fecha)
             persona.save()
-            # return HttpResponse(template_renderizado)
-    return render(request,'crear_familiar.html',{})
+        # return HttpResponse(template_renderizado)
+    formulario = FamiliarFormulario()
+    return render(request,'crear_familiar.html',{'formulario': formulario})
 
 def ver_familiares(request):
     
